@@ -1,6 +1,7 @@
 export default class Canvas {
     constructor() {
         this.canvas = document.getElementById('myCanvas');
+        this.resizeCanvas();
     }
 
     resizeCanvas() {

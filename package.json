@@ -9,12 +9,12 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Eugene-Balabat/game-balls.git"
+        "url": "git+https://github.com/Eugene-Balabat/wep-game-balls.git"
     },
     "author": "Eugene Balabat",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/Eugene-Balabat/Web-game/game-balls"
+        "url": "https://github.com/Eugene-Balabat/Web-game/wep-game-balls"
     },
     "devDependencies": {
         "eslint": "^7.18.0",
