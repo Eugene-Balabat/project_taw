@@ -6,8 +6,23 @@ import Starter from './starter';
 const canvas = new Canvas();
 const starter = new Starter();
 
-starter.createStareter();
+starter.createStarter();
 
+canvas.canvas.addEventListener(
+    'mousemove',
+    (event) => {
+        starter.reDraw(event);
+    },
+    false
+);
+
+canvas.canvas.addEventListener(
+    'click',
+    () => {
+        starter.pushBall();
+    },
+    false
+);
 window.addEventListener(
     'resize',
     () => {
