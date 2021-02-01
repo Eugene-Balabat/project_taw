@@ -4,15 +4,14 @@ export default class Ball extends Canvas {
     constructor(params) {
         super(params);
 
-        this.posX = params.posX;
-        this.posY = params.posY;
+        this.posX = params.centerX;
+        this.posY = params.centerY;
 
-        this.routX = params.routX;
-        this.routY = params.routY;
+        this.routeX = params.routeX;
 
-        this.ballRadius = params.ballRadius;
+        this.ismoving = params.ismoving;
 
-        this.ctx = this.canvas.getContext('2d');
+        this.ballRadius = params.ballradius;
     }
 
     drawBall() {
@@ -23,5 +22,30 @@ export default class Ball extends Canvas {
         this.ctx.closePath();
     }
 
-    draw() {}
+    pushing(params) {
+        if (
+            this.posX + Math.cos(params.route) * this.routeX * params.speed >=
+                window.innerWidth - this.ballRadius ||
+            this.posX + Math.cos(params.route) * this.routeX * params.speed <=
+                this.ballRadius
+        )
+            this.routeX *= -1;
+
+        this.posY += Math.sin(params.route) * params.speed;
+        this.posX += Math.cos(params.route) * this.routeX * params.speed;
+
+        this.drawBall();
+    }
+
+    checkForPushing(params) {
+        if (
+            this.posY + Math.sin(params.route) * params.speed <=
+            this.ballRadius - 0.1
+        )
+            this.ismoving = false;
+        else {
+            this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            this.pushing(params);
+        }
+    }
 }

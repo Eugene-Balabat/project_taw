@@ -1,42 +1,50 @@
+import Ball from './ball';
 import Canvas from './canvas';
-import Ball from './1level';
 
 export default class Starter extends Canvas {
     constructor() {
         super();
 
+        this.maxlenght = 100;
+        this.speed = 3;
+
         this.centerX = window.innerWidth / 2;
         this.centerY = window.innerHeight - 40;
 
-        this.targetX = window.innerWidth / 2;
-        this.targetY = window.innerHeight / 2;
+        this.route = Math.atan2(
+            window.innerHeight / 2 - this.centerY,
+            window.innerWidth / 2 - this.centerX
+        );
 
-        this.ballradius = 12;
-        this.maxlenght = 100;
+        this.maxY = this.centerY + Math.sin(this.route) * this.maxlenght;
+        this.maxX = this.centerX + Math.cos(this.route) * this.maxlenght;
 
-        this.ball = new Ball();
+        this.ball = new Ball({
+            centerX: this.centerX,
+            centerY: this.centerY,
 
-        this.ctx = this.canvas.getContext('2d');
+            routeX: 0,
 
-        this.createStarter(this.targetX, this.targetY);
+            ismoving: false,
+
+            ballradius: 12,
+        });
     }
 
-    createStarter(x, y) {
-        this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
+    createStarter() {
         this.ctx.beginPath();
+
         this.ctx.lineWidth = 2;
         this.ctx.strokeStyle = 'black';
         this.ctx.setLineDash([7, 16]);
+
         this.ctx.moveTo(this.centerX, this.centerY);
-        this.ctx.lineTo(x, y);
+        this.ctx.lineTo(this.maxX, this.maxY);
+
         this.ctx.stroke();
         this.ctx.closePath();
 
-        this.ctx.beginPath();
-        this.ctx.arc(this.centerX, this.centerY, 13, 0, Math.PI * 2);
-        this.ctx.fillStyle = '#0095DD';
-        this.ctx.fill();
+        this.ball.drawBall();
     }
 
     reDraw(event) {
@@ -45,9 +53,13 @@ export default class Starter extends Canvas {
             event.clientX - this.centerX
         );
 
-        const maxY = this.centerY + Math.sin(angle) * this.maxlenght;
-        const maxX = this.centerX + Math.cos(angle) * this.maxlenght;
+        this.maxY = this.centerY + Math.sin(angle) * this.maxlenght;
+        this.maxX = this.centerX + Math.cos(angle) * this.maxlenght;
 
-        if (maxY < this.centerY) this.createStarter(maxX, maxY);
+        if (this.maxY < this.centerY) {
+            this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            // добавить перерисовку
+            this.createStarter();
+        }
     }
 }

@@ -1,12 +1,19 @@
 import Canvas from './canvas';
 import Starter from './starter';
-// import Level1 from './1level';
+import Level1 from './1level';
 
-// const level1 = new Level1({ countBalls: 3 });
 const canvas = new Canvas();
+const level1 = new Level1({ countBalls: 1 });
 const starter = new Starter();
 
-starter.createStarter();
+setInterval(() => {
+    if (starter.ball.ismoving) {
+        starter.ball.checkForPushing({
+            speed: starter.speed,
+            route: starter.route,
+        });
+    }
+}, 10);
 
 canvas.canvas.addEventListener(
     'mousemove',
@@ -18,8 +25,14 @@ canvas.canvas.addEventListener(
 
 canvas.canvas.addEventListener(
     'click',
-    () => {
-        starter.pushBall();
+    (event) => {
+        starter.route = Math.atan2(
+            event.clientY - starter.centerY,
+            event.clientX - starter.centerX
+        );
+
+        starter.ball.routeX = 1;
+        starter.ball.ismoving = true;
     },
     false
 );
