@@ -1,15 +1,48 @@
 import Starter from './starter';
 import Ball from './ball';
 
-export default class Level1 extends Ball {
+export default class Level1 extends Starter {
     constructor(params) {
         super(params);
+
+        this.movingBall = new Ball({
+            centerX: this.centerX,
+            centerY: this.centerY,
+
+            routeX: 1,
+
+            ismoving: false,
+
+            ballradius: 12,
+        });
 
         this.countBalls = params.countBalls;
         this.balls = [];
     }
 
-    addBall(ball) {
-        this.balls.push(ball);
+    addBall() {
+        this.balls.push(this.movingBall);
+
+        this.movingBall = new Ball({
+            centerX: this.centerX,
+            centerY: this.centerY,
+
+            routeX: 1,
+
+            ismoving: false,
+
+            ballradius: 12,
+        });
+
+        this.createStarter();
+        this.reDrawBalls();
+
+        this.movingBall.drawBall();
+    }
+
+    reDrawBalls() {
+        this.balls.forEach((element) => {
+            element.drawBall();
+        });
     }
 }

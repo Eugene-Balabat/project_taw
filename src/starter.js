@@ -1,4 +1,3 @@
-import Ball from './ball';
 import Canvas from './canvas';
 
 export default class Starter extends Canvas {
@@ -18,17 +17,6 @@ export default class Starter extends Canvas {
 
         this.maxY = this.centerY + Math.sin(this.route) * this.maxlenght;
         this.maxX = this.centerX + Math.cos(this.route) * this.maxlenght;
-
-        this.ball = new Ball({
-            centerX: this.centerX,
-            centerY: this.centerY,
-
-            routeX: 0,
-
-            ismoving: false,
-
-            ballradius: 12,
-        });
     }
 
     createStarter() {
@@ -43,11 +31,9 @@ export default class Starter extends Canvas {
 
         this.ctx.stroke();
         this.ctx.closePath();
-
-        this.ball.drawBall();
     }
 
-    reDraw(event) {
+    calcAngle(event) {
         const angle = Math.atan2(
             event.clientY - this.centerY,
             event.clientX - this.centerX
@@ -55,11 +41,5 @@ export default class Starter extends Canvas {
 
         this.maxY = this.centerY + Math.sin(angle) * this.maxlenght;
         this.maxX = this.centerX + Math.cos(angle) * this.maxlenght;
-
-        if (this.maxY < this.centerY) {
-            this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-            // добавить перерисовку
-            this.createStarter();
-        }
     }
 }

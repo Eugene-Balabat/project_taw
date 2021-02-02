@@ -36,16 +36,4 @@ export default class Ball extends Canvas {
 
         this.drawBall();
     }
-
-    checkForPushing(params) {
-        if (
-            this.posY + Math.sin(params.route) * params.speed <=
-            this.ballRadius - 0.1
-        )
-            this.ismoving = false;
-        else {
-            this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-            this.pushing(params);
-        }
-    }
 }
