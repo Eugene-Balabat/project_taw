@@ -5,14 +5,15 @@ export default class Starter extends Canvas {
         super();
 
         this.maxlenght = 100;
-        this.speed = 3;
 
-        this.centerX = window.innerWidth / 2;
-        this.centerY = window.innerHeight - 40;
+        this.speed = 5;
+
+        this.centerX = this.canvas.width / 2;
+        this.centerY = this.canvas.height - 40;
 
         this.route = Math.atan2(
-            window.innerHeight / 2 - this.centerY,
-            window.innerWidth / 2 - this.centerX
+            this.canvas.height / 2 - this.centerY,
+            this.canvas.width / 2 - this.centerX
         );
 
         this.maxY = this.centerY + Math.sin(this.route) * this.maxlenght;

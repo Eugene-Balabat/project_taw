@@ -1,7 +1,5 @@
-import Canvas from './canvas';
 import Level1 from './1level';
 
-const canvas = new Canvas();
 const level1 = new Level1({ countBalls: 1 });
 
 setInterval(() => {
@@ -12,7 +10,7 @@ setInterval(() => {
         level1.movingBall.ismoving = false;
 
     if (level1.movingBall.ismoving) {
-        level1.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        level1.ctx.clearRect(0, 0, level1.canvas.width, level1.canvas.height);
 
         level1.reDrawBalls();
         level1.createStarter();
@@ -20,6 +18,7 @@ setInterval(() => {
         level1.movingBall.pushing({
             speed: level1.speed,
             route: level1.route,
+            balls: level1.balls,
         });
     } else if (
         level1.movingBall.posX !== level1.centerX &&
@@ -28,12 +27,17 @@ setInterval(() => {
         level1.addBall();
 }, 10);
 
-canvas.canvas.addEventListener(
+level1.canvas.addEventListener(
     'mousemove',
     (event) => {
         level1.calcAngle(event);
         if (level1.maxY < level1.centerY) {
-            level1.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            level1.ctx.clearRect(
+                0,
+                0,
+                level1.canvas.width,
+                level1.canvas.height
+            );
             level1.movingBall.drawBall();
 
             level1.reDrawBalls();
@@ -45,7 +49,7 @@ canvas.canvas.addEventListener(
     false
 );
 
-canvas.canvas.addEventListener(
+level1.canvas.addEventListener(
     'click',
     (event) => {
         if (!level1.movingBall.ismoving) {
@@ -62,7 +66,13 @@ canvas.canvas.addEventListener(
 window.addEventListener(
     'resize',
     () => {
-        canvas.resizeCanvas();
+        level1.ctx.clearRect(0, 0, level1.canvas.width, level1.canvas.height);
+        level1.resizeCanvas();
+
+        level1.createStarter();
+        level1.reDrawBalls();
+
+        level1.movingBall.drawBall();
     },
     false
 );

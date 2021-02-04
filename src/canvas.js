@@ -3,8 +3,8 @@ export default class Canvas {
         this.canvas = document.getElementById('myCanvas');
         this.ctx = this.canvas.getContext('2d');
 
-        this.canvas.style.cursor = 'none';
         this.resizeCanvas();
+        this.canvas.style.cursor = 'none';
     }
 
     resizeCanvas() {
