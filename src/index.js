@@ -3,11 +3,13 @@ import Level1 from './1level';
 const level1 = new Level1({ countBalls: 1 });
 
 setInterval(() => {
-    if (
-        level1.movingBall.posY + Math.sin(level1.route) * level1.speed <=
-        level1.movingBall.ballRadius
-    )
-        level1.movingBall.ismoving = false;
+    const params = {
+        speed: level1.speed,
+        route: level1.route,
+        balls: level1.balls,
+    };
+
+    level1.movingBall.correctPosY(params);
 
     if (level1.movingBall.ismoving) {
         level1.ctx.clearRect(0, 0, level1.canvas.width, level1.canvas.height);
@@ -15,11 +17,7 @@ setInterval(() => {
         level1.reDrawBalls();
         level1.createStarter();
 
-        level1.movingBall.pushing({
-            speed: level1.speed,
-            route: level1.route,
-            balls: level1.balls,
-        });
+        level1.movingBall.pushing(params);
     } else if (
         level1.movingBall.posX !== level1.centerX &&
         level1.movingBall.posY !== level1.centerY

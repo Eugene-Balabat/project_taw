@@ -12,8 +12,6 @@ export default class Level1 extends Starter {
             routeX: 1,
 
             ismoving: false,
-
-            ballradius: 12,
         });
 
         this.countBalls = params.countBalls;
@@ -30,8 +28,6 @@ export default class Level1 extends Starter {
             routeX: 1,
 
             ismoving: false,
-
-            ballradius: 12,
         });
 
         this.createStarter();

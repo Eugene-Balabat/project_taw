@@ -4,9 +4,9 @@ export default class Starter extends Canvas {
     constructor() {
         super();
 
-        this.maxlenght = 100;
+        this.maxlenght = 150;
 
-        this.speed = 5;
+        this.speed = 7;
 
         this.centerX = this.canvas.width / 2;
         this.centerY = this.canvas.height - 40;
@@ -23,9 +23,9 @@ export default class Starter extends Canvas {
     createStarter() {
         this.ctx.beginPath();
 
-        this.ctx.lineWidth = 2;
+        this.ctx.lineWidth = 3;
         this.ctx.strokeStyle = 'black';
-        this.ctx.setLineDash([7, 16]);
+        this.ctx.setLineDash([12, 15]);
 
         this.ctx.moveTo(this.centerX, this.centerY);
         this.ctx.lineTo(this.maxX, this.maxY);
