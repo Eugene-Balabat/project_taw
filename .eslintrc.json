@@ -9,6 +9,8 @@
         "no-console": "off",
         "class-methods-use-this": "off",
         "no-param-reassign": "off",
-        "no-return-assign": "off"
+        "no-return-assign": "off",
+        "no-unused-expressions": "off",
+        "consistent-return": "off"
     }
 }

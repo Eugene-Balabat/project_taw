@@ -28,21 +28,15 @@ setInterval(() => {
 level1.canvas.addEventListener(
     'mousemove',
     (event) => {
-        level1.calcAngle(event);
-        if (level1.maxY < level1.centerY) {
-            level1.ctx.clearRect(
-                0,
-                0,
-                level1.canvas.width,
-                level1.canvas.height
-            );
-            level1.movingBall.drawBall();
+        level1.calcAngle(event, level1.ballradius);
 
-            level1.reDrawBalls();
+        level1.ctx.clearRect(0, 0, level1.canvas.width, level1.canvas.height);
 
-            level1.createStarter();
-            if (!level1.movingBall.ismoving) level1.movingBall.drawBall();
-        }
+        level1.reDrawBalls();
+
+        level1.createStarter();
+
+        level1.movingBall.drawBall();
     },
     false
 );
@@ -50,7 +44,7 @@ level1.canvas.addEventListener(
 level1.canvas.addEventListener(
     'click',
     (event) => {
-        if (!level1.movingBall.ismoving) {
+        if (!level1.movingBall.ismoving && event.clientY < level1.centerY) {
             level1.route = Math.atan2(
                 event.clientY - level1.centerY,
                 event.clientX - level1.centerX
@@ -61,14 +55,17 @@ level1.canvas.addEventListener(
     false
 );
 
-window.addEventListener(
+level1.canvas.addEventListener(
     'resize',
     () => {
+        level1.canvas.width = window.innerWidth;
+        level1.canvas.height = window.innerHeight;
+
         level1.ctx.clearRect(0, 0, level1.canvas.width, level1.canvas.height);
-        level1.resizeCanvas();
+
+        level1.reDrawBalls();
 
         level1.createStarter();
-        level1.reDrawBalls();
 
         level1.movingBall.drawBall();
     },

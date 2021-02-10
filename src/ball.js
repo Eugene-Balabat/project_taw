@@ -9,9 +9,9 @@ export default class Ball extends Canvas {
 
         this.routeX = params.routeX;
 
-        this.ismoving = params.ismoving;
+        this.ballRadius = params.ballradius;
 
-        this.ballRadius = 25;
+        this.ismoving = params.ismoving;
     }
 
     drawBall() {
@@ -22,14 +22,7 @@ export default class Ball extends Canvas {
         this.ctx.closePath();
     }
 
-    push(params) {
-        this.posY += Math.sin(params.route) * params.speed;
-        this.posX += Math.cos(params.route) * this.routeX * params.speed;
-    }
-
     correctPosY(params) {
-        const newparams = params;
-
         if (
             Math.floor(this.posY + Math.sin(params.route) * params.speed) ===
             Math.floor(this.ballRadius)
@@ -40,15 +33,13 @@ export default class Ball extends Canvas {
             Math.floor(this.posY + Math.sin(params.route) * params.speed) <
             Math.floor(this.ballRadius)
         ) {
-            newparams.speed -= 0.1;
-            this.correctPosY(newparams);
+            params.speed -= 0.1;
+            this.correctPosY(params);
         }
     }
 
-    checkMergerBalls(params, inc) {
-        if (inc === params.balls.length) return params.speed;
-
-        const distance = Math.sqrt(
+    getDistance(params, inc) {
+        return Math.sqrt(
             (this.posX +
                 Math.cos(params.route) * this.routeX * params.speed -
                 params.balls[inc].posX) **
@@ -58,20 +49,48 @@ export default class Ball extends Canvas {
                     params.balls[inc].posY) **
                     2
         );
+    }
 
-        if (
-            Math.floor(distance) <
-            Math.floor(this.ballRadius + params.balls[inc].ballRadius)
-        ) {
-            params.speed -= 0.1;
-            return this.checkMergerBalls(params, inc);
+    checkMergerBalls(params, inc, state) {
+        if (state) {
+            if (inc === params.balls.length) {
+                return this.checkMergerBalls(
+                    params,
+                    (inc = 0),
+                    (state = false)
+                );
+            }
+
+            if (
+                Math.floor(this.getDistance(params, inc)) <
+                Math.floor(this.ballRadius + params.balls[inc].ballRadius)
+            ) {
+                params.speed -= 0.1;
+                return this.checkMergerBalls(params, inc, state);
+            }
+        } else if (!state) {
+            if (inc === params.balls.length) return params.speed;
+
+            if (
+                Math.floor(this.getDistance(params, inc)) ===
+                Math.floor(this.ballRadius + params.balls[inc].ballRadius)
+            ) {
+                this.ismoving = false;
+                return params.speed;
+            }
         }
 
-        return this.checkMergerBalls(params, (inc += 1));
+        return this.checkMergerBalls(params, (inc += 1), state);
+    }
+
+    push(params) {
+        this.posY += Math.sin(params.route) * params.speed;
+        this.posX += Math.cos(params.route) * this.routeX * params.speed;
     }
 
     pushing(params) {
-        params.speed = this.checkMergerBalls(params, 0);
+        if (params.balls.length)
+            params.speed = this.checkMergerBalls(params, 0, true);
 
         if (
             this.posX + Math.cos(params.route) * this.routeX * params.speed >=
@@ -80,27 +99,6 @@ export default class Ball extends Canvas {
                 this.ballRadius
         )
             this.routeX *= -1;
-
-        for (let inc = 0; inc < params.balls.length; inc += 1) {
-            const distance = Math.sqrt(
-                (this.posX +
-                    Math.cos(params.route) * this.routeX * params.speed -
-                    params.balls[inc].posX) **
-                    2 +
-                    (this.posY +
-                        Math.sin(params.route) * params.speed -
-                        params.balls[inc].posY) **
-                        2
-            );
-
-            if (
-                Math.floor(distance) ===
-                Math.floor(this.ballRadius + params.balls[inc].ballRadius)
-            ) {
-                this.ismoving = false;
-                break;
-            }
-        }
 
         this.push(params);
 
