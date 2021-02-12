@@ -1,12 +1,21 @@
 import Starter from './starter';
 import Ball from './ball';
+import Spawn from './spawn';
 
 export default class Level1 extends Starter {
     constructor(params) {
         super(params);
-        this.ballradius = Math.floor(
-            this.canvas.width * (1.2 / 100) + this.canvas.height * (1.2 / 100)
-        );
+
+        this.countBallsOnLine = params.countBallsOnLine;
+        this.lines = params.numOfLines;
+
+        this.ballradius = this.canvas.width / this.countBallsOnLine / 2;
+
+        this.spawn = new Spawn({
+            ballradius: this.ballradius,
+            countBallsOnLine: params.countBallsOnLine,
+            lines: this.lines,
+        });
 
         this.movingBall = new Ball({
             centerX: this.centerX,
@@ -19,8 +28,7 @@ export default class Level1 extends Starter {
             ismoving: false,
         });
 
-        this.countBalls = params.countBalls;
-        this.balls = [];
+        this.balls = this.spawn.spawnBalls();
     }
 
     addBall() {
