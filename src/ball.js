@@ -7,6 +7,8 @@ export default class Ball extends Canvas {
         this.posX = params.centerX;
         this.posY = params.centerY;
 
+        this.color = params.colorBall;
+
         this.routeX = params.routeX;
 
         this.ballRadius = params.ballradius;
@@ -17,7 +19,7 @@ export default class Ball extends Canvas {
     drawBall() {
         this.ctx.beginPath();
         this.ctx.arc(this.posX, this.posY, this.ballRadius, 0, Math.PI * 2);
-        this.ctx.fillStyle = '#0095DD';
+        this.ctx.fillStyle = this.color;
         this.ctx.fill();
         this.ctx.closePath();
     }

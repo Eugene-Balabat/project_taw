@@ -5,8 +5,11 @@ export default class Spawn extends Ball {
         super(params);
 
         this.ballRadius = params.ballradius;
+
         this.targetCountBalls = params.countBallsOnLine;
         this.countLines = params.lines - 1;
+
+        this.ballColors = params.colors;
 
         this.posY = this.ballRadius;
         this.posX = this.ballRadius;
@@ -22,6 +25,10 @@ export default class Spawn extends Ball {
             new Ball({
                 centerX: posX,
                 centerY: this.posY,
+
+                colorBall: this.ballColors[
+                    Math.floor(Math.random() * (this.ballColors.length - 0)) + 0
+                ],
 
                 routeX: 1,
 
@@ -66,6 +73,6 @@ export default class Spawn extends Ball {
             return this.spawnBalls();
         }
 
-        return this.staticBalls;
+        return { staticBalls: this.staticBalls, maxPosY: this.posY * 2 };
     }
 }

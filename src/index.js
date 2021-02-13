@@ -2,7 +2,7 @@ import Level1 from './1level';
 
 const level1 = new Level1({ countBallsOnLine: 25, numOfLines: 3 });
 
-setInterval(() => {
+const intervalId = setInterval(() => {
     const params = {
         speed: level1.speed,
         route: level1.route,
@@ -18,11 +18,9 @@ setInterval(() => {
         level1.createStarter();
 
         level1.movingBall.pushing(params);
-    } else if (
-        level1.movingBall.posX !== level1.centerX &&
-        level1.movingBall.posY !== level1.centerY
-    )
-        level1.addBall();
+    } else if (level1.movingBall.posY !== level1.centerY)
+        if (level1.movingBall.posY > level1.maxYLine) clearInterval(intervalId);
+        else level1.addBall();
 }, 10);
 
 level1.canvas.addEventListener(
